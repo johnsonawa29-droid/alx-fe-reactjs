@@ -1,5 +1,5 @@
-import WelcomeMessage from "./components/WelcomeMessage";
 import UserProfile from "./components/UserProfile";
+import WelcomeMessage from "./components/WelcomeMessage";
 
 function App() {
   return (
