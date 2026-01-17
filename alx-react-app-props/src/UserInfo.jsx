@@ -1,9 +1,7 @@
+import UserProfile from "./UserProfile";
+
 function UserInfo() {
-  return (
-    <div>
-      <h2>User Profile</h2>
-    </div>
-  );
+  return <UserProfile />;
 }
 
 export default UserInfo;
