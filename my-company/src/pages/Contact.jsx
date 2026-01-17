@@ -19,7 +19,6 @@ function Contact() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Contact Us</h1>
-
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -29,7 +28,6 @@ function Contact() {
           onChange={handleChange}
           style={{ display: 'block', margin: '10px 0', padding: '8px' }}
         />
-
         <input
           type="email"
           name="email"
@@ -38,7 +36,6 @@ function Contact() {
           onChange={handleChange}
           style={{ display: 'block', margin: '10px 0', padding: '8px' }}
         />
-
         <textarea
           name="message"
           placeholder="Your Message"
@@ -46,10 +43,7 @@ function Contact() {
           onChange={handleChange}
           style={{ display: 'block', margin: '10px 0', padding: '8px' }}
         />
-
-        <button type="submit" style={{ padding: '8px 15px' }}>
-          Send Message
-        </button>
+        <button type="submit" style={{ padding: '8px 15px' }}>Send Message</button>
       </form>
     </div>
   );
