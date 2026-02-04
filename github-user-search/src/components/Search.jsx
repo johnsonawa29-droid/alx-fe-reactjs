@@ -1,25 +1,32 @@
+
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchAdvancedUsers } from "../services/githubService";
 
 function Search() {
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const handleSubmit = async (e) => {
+  const handleSearch = async (e, newPage = 1) => {
     e.preventDefault();
-
-    if (!username) return;
-
     setLoading(true);
     setError(false);
-    setUser(null);
 
     try {
-      const data = await fetchUserData(username);
-      setUser(data);
-    } catch (err) {
+      const data = await fetchAdvancedUsers({
+        username,
+        location,
+        minRepos,
+        page: newPage,
+      });
+
+      setUsers(newPage === 1 ? data.items : [...users, ...data.items]);
+      setPage(newPage);
+    } catch {
       setError(true);
     } finally {
       setLoading(false);
@@ -27,30 +34,85 @@ function Search() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-3xl mx-auto">
+      {/* Search Form */}
+      <form
+        onSubmit={(e) => handleSearch(e, 1)}
+        className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6"
+      >
         <input
           type="text"
-          placeholder="Enter GitHub username"
+          placeholder="Username"
+          className="border p-2 rounded"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <button type="submit">Search</button>
+
+        <input
+          type="text"
+          placeholder="Location"
+          className="border p-2 rounded"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+
+        <input
+          type="number"
+          placeholder="Min Repos"
+          className="border p-2 rounded"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+        />
+
+        <button
+          type="submit"
+          className="bg-black text-white rounded p-2 hover:bg-gray-800"
+        >
+          Search
+        </button>
       </form>
 
-      {/* Conditional Rendering */}
-      {loading && <p>Loading...</p>}
+      {/* States */}
+      {loading && <p className="text-center">Loading...</p>}
+      {error && <p className="text-center">Looks like we cant find the user</p>}
 
-      {error && <p>Looks like we cant find the user</p>}
+      {/* Results */}
+      <div className="grid gap-4">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="flex items-center gap-4 border p-4 rounded"
+          >
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-16 h-16 rounded-full"
+            />
 
-      {user && (
-        <div>
-          <img src={user.avatar_url} alt={user.login} width="100" />
-          <h3>{user.name || user.login}</h3>
-          <a href={user.html_url} target="_blank" rel="noreferrer">
-            View GitHub Profile
-          </a>
-        </div>
+            <div>
+              <h3 className="font-semibold">{user.login}</h3>
+              <p>Score: {user.score}</p>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 underline"
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Load More */}
+      {users.length > 0 && !loading && (
+        <button
+          onClick={(e) => handleSearch(e, page + 1)}
+          className="mt-6 w-full bg-gray-200 p-2 rounded hover:bg-gray-300"
+        >
+          Load More
+        </button>
       )}
     </div>
   );
