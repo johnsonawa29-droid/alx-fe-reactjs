@@ -1,71 +1,39 @@
-import { useState } from "react";
-import { fetchAdvancedUsers } from "../services/githubService";
+import React, { useState } from "react";
+import { fetchUserData } from "../services/githubService";
 
-function Search() {
-  const [username, setUsername] = useState("");
+const Search = ({ onResults }) => {
+  const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
-  const [minRepos, setMinRepos] = useState("");
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [minRepos, setMinRepos] = useState(0);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(false);
-
-    try {
-      const data = await fetchAdvancedUsers(username, location, minRepos);
-      setUsers(data.items);
-    } catch {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  const handleSearch = async () => {
+    const users = await fetchUserData(query, location, minRepos);
+    onResults(users);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
-        {/* ✅ location input (checker needs this word) */}
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-
-        <input
-          type="number"
-          placeholder="Minimum Repositories"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-        />
-
-        <button type="submit">Search</button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user</p>}
-
-      {users.map((user) => (
-        <div key={user.id}>
-          <img src={user.avatar_url} alt={user.login} width="80" />
-          <h3>{user.login}</h3>
-          <a href={user.html_url} target="_blank" rel="noreferrer">
-            View Profile
-          </a>
-        </div>
-      ))}
+      <input
+        type="text"
+        placeholder="Search users"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Min Repos"
+        value={minRepos}
+        onChange={(e) => setMinRepos(Number(e.target.value))}
+      />
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
-}
+};
 
 export default Search;
