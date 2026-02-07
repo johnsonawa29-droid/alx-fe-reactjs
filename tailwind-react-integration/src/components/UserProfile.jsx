@@ -12,7 +12,9 @@ const UserProfile = ({ user }) => {
       />
 
       {/* User Info */}
-      <h2 className="mt-4 text-2xl font-semibold">{user.name}</h2>
+      <h2 className="mt-4 text-2xl font-semibold hover:text-blue-500 transition-colors duration-300 cursor-pointer">
+        {user.name}
+      </h2>
       <p className="text-gray-500 mb-2">@{user.login}</p>
       <p className="text-gray-700 text-center">{user.bio || "No bio available."}</p>
 
