@@ -1,21 +1,46 @@
 // src/components/UserProfile.jsx
+import React from "react";
 
-function UserProfile() {
+const UserProfile = ({ user }) => {
   return (
-    <div className="user-profile bg-gray-100 sm:p-4 md:p-8 max-w-xs md:max-w-sm mx-auto my-12 sm:my-16 rounded-lg shadow-lg">
+    <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md max-w-sm mx-auto">
+      {/* Profile Image with hover effect */}
       <img
-        src="https://via.placeholder.com/150"
-        alt="User"
-        className="rounded-full w-32 h-32 sm:w-24 sm:h-24 md:w-36 md:h-36 mx-auto"
+        src={user.avatar_url}
+        alt={user.name}
+        className="w-32 h-32 rounded-full hover:scale-110 transition-transform duration-300 ease-in-out"
       />
-      <h1 className="text-lg sm:text-lg md:text-xl text-blue-800 my-3 sm:my-4 text-center font-semibold">
-        John Doe
-      </h1>
-      <p className="text-gray-600 text-sm sm:text-base text-center">
-        Developer at Example Co. Loves to write code and explore new technologies.
-      </p>
-    </div>
-  )
-}
 
-export default UserProfile
+      {/* User Info */}
+      <h2 className="mt-4 text-2xl font-semibold">{user.name}</h2>
+      <p className="text-gray-500 mb-2">@{user.login}</p>
+      <p className="text-gray-700 text-center">{user.bio || "No bio available."}</p>
+
+      {/* Optional links */}
+      <div className="flex space-x-4 mt-4">
+        {user.html_url && (
+          <a
+            href={user.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            GitHub
+          </a>
+        )}
+        {user.blog && (
+          <a
+            href={user.blog}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors duration-300"
+          >
+            Blog
+          </a>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default UserProfile;
