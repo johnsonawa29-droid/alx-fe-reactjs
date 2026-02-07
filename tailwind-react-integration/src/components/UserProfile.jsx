@@ -3,7 +3,7 @@ import React from "react";
 
 const UserProfile = ({ user }) => {
   return (
-    <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md max-w-sm mx-auto">
+    <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 max-w-sm mx-auto">
       {/* Profile Image with hover effect */}
       <img
         src={user.avatar_url}
