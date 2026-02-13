@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 const AddRecipeForm = () => {
@@ -6,10 +7,8 @@ const AddRecipeForm = () => {
   const [instructions, setInstructions] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Simple validation
+  // Validation function
+  const validate = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim()) {
@@ -19,10 +18,16 @@ const AddRecipeForm = () => {
     }
     if (!instructions.trim()) newErrors.instructions = "Instructions are required";
 
-    setErrors(newErrors);
+    return newErrors;
+  };
 
-    // If no errors, submit the form
-    if (Object.keys(newErrors).length === 0) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(); // Use validate function
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
       const newRecipe = {
         id: Date.now(),
         title,
@@ -31,13 +36,11 @@ const AddRecipeForm = () => {
       };
 
       console.log("New recipe submitted:", newRecipe);
-      // TODO: save recipe to backend or local state
+      alert("Recipe submitted successfully!");
 
-      // Reset form
       setTitle("");
       setIngredients("");
       setInstructions("");
-      alert("Recipe submitted successfully!");
     }
   };
 
@@ -47,7 +50,7 @@ const AddRecipeForm = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
         <div>
-          <label className="block text-gray-700 font-semibold mb-2" htmlFor="title">
+          <label htmlFor="title" className="block text-gray-700 font-semibold mb-2">
             Recipe Title
           </label>
           <input
@@ -65,7 +68,7 @@ const AddRecipeForm = () => {
 
         {/* Ingredients */}
         <div>
-          <label className="block text-gray-700 font-semibold mb-2" htmlFor="ingredients">
+          <label htmlFor="ingredients" className="block text-gray-700 font-semibold mb-2">
             Ingredients (comma separated)
           </label>
           <textarea
@@ -83,7 +86,7 @@ const AddRecipeForm = () => {
 
         {/* Instructions */}
         <div>
-          <label className="block text-gray-700 font-semibold mb-2" htmlFor="instructions">
+          <label htmlFor="instructions" className="block text-gray-700 font-semibold mb-2">
             Preparation Steps
           </label>
           <textarea
@@ -91,24 +94,4 @@ const AddRecipeForm = () => {
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
             rows={6}
-            className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-              errors.instructions ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-blue-400"
-            }`}
-            placeholder="Describe the preparation steps..."
-          />
-          {errors.instructions && <p className="text-red-500 mt-1 text-sm">{errors.instructions}</p>}
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Submit Recipe
-        </button>
-      </form>
-    </div>
-  );
-};
-
-export default AddRecipeForm;
+            className={`w-full p-3 border
