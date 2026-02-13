@@ -1,10 +1,10 @@
-
 [
   {
     "id": 1,
     "title": "Jollof Rice",
     "description": "A popular West African dish",
     "image": "/images/jollof.jpg",
+    "ingredients": ["Rice", "Tomatoes", "Onions", "Pepper", "Spices"],
     "instructions": "Cook rice with tomato sauce and spices."
   }
 ]
