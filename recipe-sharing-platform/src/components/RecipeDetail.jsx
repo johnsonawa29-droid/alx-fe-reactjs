@@ -1,39 +1,41 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import data from "../data.json";
 
 const RecipeDetail = () => {
+  const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    // Simulating fetching recipe details
-    const fetchRecipe = async () => {
-      const data = {
-        id: 1,
-        title: "Jollof Rice",
-        description: "A popular West African rice dish made with tomatoes and spices.",
-        ingredients: ["Rice", "Tomatoes", "Onions", "Pepper", "Spices"],
-      };
-
-      setRecipe(data);
-    };
-
-    fetchRecipe();
-  }, []);
+    const selectedRecipe = data.find(
+      (item) => item.id === parseInt(id)
+    );
+    setRecipe(selectedRecipe);
+  }, [id]);
 
   if (!recipe) {
     return <p className="text-center mt-10">Loading recipe...</p>;
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">{recipe.title}</h1>
-      <p className="mb-4 text-gray-700">{recipe.description}</p>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      {/* image */}
+      <img
+        src={recipe.image}
+        alt={recipe.title}
+        className="w-full h-64 object-cover rounded-lg mb-6"
+      />
 
-      <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
-      <ul className="list-disc list-inside">
-        {recipe.ingredients.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
+
+      <p className="text-gray-700 mb-6">{recipe.description}</p>
+
+      <h2 className="text-xl font-semibold mb-2">Instructions</h2>
+
+      {/* instructions */}
+      <p className="text-gray-700 leading-relaxed">
+        {recipe.instructions}
+      </p>
     </div>
   );
 };
