@@ -8,21 +8,24 @@ const FormikForm = () => {
     password: "",
   };
 
+  // Yup validation schema
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     email: Yup.string().required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = async (values, { resetForm }) => {
-    await fetch("https://jsonplaceholder.typicode.com/posts", {
+  // Formik validation logic + submit handler
+  const handleSubmit = (values, { resetForm }) => {
+    fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(values),
     });
 
     resetForm();
-    alert("Registration successful!");
   };
 
   return (
