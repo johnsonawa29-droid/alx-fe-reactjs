@@ -1,10 +1,12 @@
-import React from 'react';
-import PostsComponent from './components/PostsComponent.jsx';
+import Posts from "./components/Posts";
 
-export default function App() {
+const App = () => {
   return (
-    <div className="p-6">
-      <PostsComponent />
+    <div>
+      <h1>React Query Demo</h1>
+      <Posts />
     </div>
   );
-}
+};
+
+export default App;
